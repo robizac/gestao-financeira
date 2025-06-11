@@ -1,6 +1,6 @@
-package br.com.java.gestao_custo.repository;
+package br.com.roberto.gestaofinanceira.repository;
 
-import br.com.java.gestao_custo.entity.Despesa;
+import br.com.roberto.gestaofinanceira.entity.Despesa;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;

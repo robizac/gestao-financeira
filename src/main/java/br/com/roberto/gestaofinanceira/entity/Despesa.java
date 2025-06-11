@@ -1,9 +1,8 @@
-package br.com.java.gestao_custo.entity;
+package br.com.roberto.gestaofinanceira.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

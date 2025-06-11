@@ -1,4 +1,4 @@
-package br.com.java.gestao_custo;
+package br.com.roberto.gestaofinanceira;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

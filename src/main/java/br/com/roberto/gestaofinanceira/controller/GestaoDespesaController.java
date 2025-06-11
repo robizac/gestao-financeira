@@ -1,9 +1,8 @@
-package br.com.java.gestao_custo.controller;
+package br.com.roberto.gestaofinanceira.controller;
 
-import br.com.java.gestao_custo.entity.Despesa;
-import br.com.java.gestao_custo.useCase.BuscarDespesaPorDataUseCase;
-import br.com.java.gestao_custo.useCase.CadastroDespesaUseCase;
-import org.springframework.beans.factory.annotation.Autowired;
+import br.com.roberto.gestaofinanceira.entity.Despesa;
+import br.com.roberto.gestaofinanceira.usecase.BuscarDespesaPorDataUseCase;
+import br.com.roberto.gestaofinanceira.usecase.CadastroDespesaUseCase;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,11 +15,14 @@ import java.util.List;
 @RequestMapping("/gestao")
 public class GestaoDespesaController {
 
-    @Autowired
-    private CadastroDespesaUseCase cadastroDespesaUseCase;
+    private final CadastroDespesaUseCase cadastroDespesaUseCase;
+    private final BuscarDespesaPorDataUseCase buscarDespesaPorDataUseCase;
 
-    @Autowired
-    private BuscarDespesaPorDataUseCase buscarDespesaPorDataUseCase;
+    public GestaoDespesaController(CadastroDespesaUseCase cadastroDespesaUseCase,
+                                   BuscarDespesaPorDataUseCase buscarDespesaPorDataUseCase) {
+        this.cadastroDespesaUseCase = cadastroDespesaUseCase;
+        this.buscarDespesaPorDataUseCase = buscarDespesaPorDataUseCase;
+    }
 
     @PostMapping("/create")
     public ResponseEntity<Despesa> create(@RequestBody Despesa despesa) {
