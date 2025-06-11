@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>br.com.java</groupId>
-	<artifactId>gestao-custo</artifactId>
+	<artifactId>gestao-financeira</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Gestao de custos pessoais</name>
 	<description>Demo project for Spring Boot</description>

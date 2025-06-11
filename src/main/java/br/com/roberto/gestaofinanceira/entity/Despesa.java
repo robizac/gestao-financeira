@@ -8,9 +8,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Entity
-@Table(name = "despesa")
 @Data
+@Entity
 public class Despesa {
 
     @Id
@@ -18,7 +17,7 @@ public class Despesa {
     private UUID id;
     private String descricao;
     private LocalDate data;
-    private Double valor;
+    private double valor;
     @CreationTimestamp
     private LocalDateTime dataCriacao;
 }

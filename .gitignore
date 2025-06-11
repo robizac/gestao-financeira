@@ -1,33 +1,51 @@
-HELP.md
-target/
-.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+# Sistema operacional macOS
+.DS_Store
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-
-### IntelliJ IDEA ###
-.idea
-*.iws
+# IntelliJ IDEA
+.idea/
 *.iml
-*.ipr
+*.iws
+out/
+target/
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
+# Logs
+*.log
 
-### VS Code ###
-.vscode/
+# Spring Boot
+*.jar
+*.war
+
+# Diretórios gerados
+/build/
+/target/
+
+# Arquivos temporários do Maven (caso use)
+.mvn/
+.mvn/wrapper/maven-wrapper.jar
+
+# Arquivos do banco H2 (persistentes, caso existam)
+data.mv.db
+data.trace.db
+
+# Arquivos específicos do IntelliJ para run configurations, caches, etc
+.idea/*
+!*.iml
+.idea/modules.xml
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/dictionaries
+.idea/vcs.xml
+.idea/jsLibraryMappings.xml
+
+# Arquivos gerados pelo sistema de compilação
+out/
+
+# Arquivos temporários do sistema
+*.tmp
+*.swp
+*~
+
+# Outros arquivos comuns a ignorar
+*.class
+*.log
+
