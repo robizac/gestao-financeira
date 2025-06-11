@@ -3,8 +3,7 @@ package br.com.roberto.gestaofinanceira.controller;
 import br.com.roberto.gestaofinanceira.entity.Despesa;
 import br.com.roberto.gestaofinanceira.usecase.BuscarDespesaPorDataUseCase;
 import br.com.roberto.gestaofinanceira.usecase.CadastroDespesaUseCase;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.mockito.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,16 +26,22 @@ class GestaoDespesaControllerTest {
     @InjectMocks
     private GestaoDespesaController controller;
 
+    private AutoCloseable closeable;
+
     @BeforeEach
     void setup() {
-        MockitoAnnotations.openMocks(this);
+        closeable = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        closeable.close();
     }
 
     @Test
     void testCreateSuccess() {
         Despesa despesa = new Despesa();
         despesa.setValor(100.0);
-        // configure outros campos se precisar
 
         when(cadastroDespesaUseCase.execute(despesa)).thenReturn(despesa);
 
@@ -92,7 +97,7 @@ class GestaoDespesaControllerTest {
 
     @Test
     void testBuscarPorDataBadRequest() {
-        String dataInvalida = "2025-13-40"; // data inválida
+        String dataInvalida = "2025-13-40";
 
         ResponseEntity<List<Despesa>> response = controller.buscarPorData(dataInvalida);
 

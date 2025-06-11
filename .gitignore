@@ -37,9 +37,6 @@ data.trace.db
 .idea/vcs.xml
 .idea/jsLibraryMappings.xml
 
-# Arquivos gerados pelo sistema de compilação
-out/
-
 # Arquivos temporários do sistema
 *.tmp
 *.swp
@@ -47,5 +44,4 @@ out/
 
 # Outros arquivos comuns a ignorar
 *.class
-*.log
 
