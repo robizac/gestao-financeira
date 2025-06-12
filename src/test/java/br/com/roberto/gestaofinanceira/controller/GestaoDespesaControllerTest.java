@@ -1,16 +1,14 @@
 package br.com.roberto.gestaofinanceira.controller;
 
 import br.com.roberto.gestaofinanceira.entity.Despesa;
-import br.com.roberto.gestaofinanceira.usecase.BuscarDespesaPorDataUseCase;
+import br.com.roberto.gestaofinanceira.usecase.BuscarDespesaUseCase;
 import br.com.roberto.gestaofinanceira.usecase.CadastroDespesaUseCase;
 import org.junit.jupiter.api.*;
 import org.mockito.*;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.*;
+import org.springframework.http.*;
 
-import java.time.LocalDate;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -21,7 +19,7 @@ class GestaoDespesaControllerTest {
     private CadastroDespesaUseCase cadastroDespesaUseCase;
 
     @Mock
-    private BuscarDespesaPorDataUseCase buscarDespesaPorDataUseCase;
+    private BuscarDespesaUseCase buscarDespesaUseCase;
 
     @InjectMocks
     private GestaoDespesaController controller;
@@ -66,56 +64,59 @@ class GestaoDespesaControllerTest {
     }
 
     @Test
-    void testBuscarPorDataSuccess() {
-        LocalDate data = LocalDate.of(2025, 6, 11);
+    void testBuscarComResultados() {
+        int page = 0;
+        int size = 10;
+        Pageable pageable = PageRequest.of(page, size);
+
         Despesa despesa = new Despesa();
         despesa.setValor(50.0);
 
-        List<Despesa> despesas = List.of(despesa);
+        Page<Despesa> pagina = new PageImpl<>(List.of(despesa), pageable, 1);
 
-        when(buscarDespesaPorDataUseCase.execute(data)).thenReturn(despesas);
+        when(buscarDespesaUseCase.execute(pageable)).thenReturn(pagina);
 
-        ResponseEntity<List<Despesa>> response = controller.buscarPorData(data.toString());
+        ResponseEntity<Page<Despesa>> response = controller.buscar(page, size);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(despesas, response.getBody());
-        verify(buscarDespesaPorDataUseCase, times(1)).execute(data);
+        assertNotNull(response.getBody());
+        assertEquals(1, response.getBody().getContent().size());
+        assertEquals(despesa, response.getBody().getContent().get(0));
+
+        verify(buscarDespesaUseCase, times(1)).execute(pageable);
     }
 
     @Test
-    void testBuscarPorDataNoContent() {
-        LocalDate data = LocalDate.of(2025, 6, 11);
+    void testBuscarSemResultados() {
+        int page = 0;
+        int size = 10;
+        Pageable pageable = PageRequest.of(page, size);
 
-        when(buscarDespesaPorDataUseCase.execute(data)).thenReturn(Collections.emptyList());
+        Page<Despesa> emptyPage = new PageImpl<>(Collections.emptyList(), pageable, 0);
 
-        ResponseEntity<List<Despesa>> response = controller.buscarPorData(data.toString());
+        when(buscarDespesaUseCase.execute(pageable)).thenReturn(emptyPage);
+
+        ResponseEntity<Page<Despesa>> response = controller.buscar(page, size);
 
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         assertNull(response.getBody());
-        verify(buscarDespesaPorDataUseCase, times(1)).execute(data);
+
+        verify(buscarDespesaUseCase, times(1)).execute(pageable);
     }
 
     @Test
-    void testBuscarPorDataBadRequest() {
-        String dataInvalida = "2025-13-40";
+    void testBuscarErroInterno() {
+        int page = 0;
+        int size = 10;
+        Pageable pageable = PageRequest.of(page, size);
 
-        ResponseEntity<List<Despesa>> response = controller.buscarPorData(dataInvalida);
+        when(buscarDespesaUseCase.execute(pageable)).thenThrow(new RuntimeException("Erro inesperado"));
 
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertNull(response.getBody());
-        verifyNoInteractions(buscarDespesaPorDataUseCase);
-    }
-
-    @Test
-    void testBuscarPorDataInternalServerError() {
-        LocalDate data = LocalDate.of(2025, 6, 11);
-
-        when(buscarDespesaPorDataUseCase.execute(data)).thenThrow(new RuntimeException("Erro"));
-
-        ResponseEntity<List<Despesa>> response = controller.buscarPorData(data.toString());
+        ResponseEntity<Page<Despesa>> response = controller.buscar(page, size);
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
         assertNull(response.getBody());
-        verify(buscarDespesaPorDataUseCase, times(1)).execute(data);
+
+        verify(buscarDespesaUseCase, times(1)).execute(pageable);
     }
 }
